@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   // Allow ffmpeg-static and archiver to be resolved server-side
   serverExternalPackages: ["ffmpeg-static"],
 
