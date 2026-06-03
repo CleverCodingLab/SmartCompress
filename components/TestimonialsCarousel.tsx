@@ -48,9 +48,7 @@ const testimonials: Testimonial[] = [
 export default function TestimonialsCarousel() {
   const [current, setCurrent] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const hasAnimated = useRef(false);
 
   const goTo = useCallback(
     (index: number) => {
@@ -94,35 +92,10 @@ export default function TestimonialsCarousel() {
     };
   }, [current, goTo]);
 
-  // Scroll-triggered entrance
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated.current) {
-            hasAnimated.current = true;
-            animate(".testimonial-container", {
-              translateY: [40, 0],
-              opacity: [0, 1],
-              duration: 700,
-              ease: "outCubic",
-            });
-          }
-        });
-      },
-      { threshold: 0.05 }
-    );
-
-    observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   const t = testimonials[current];
 
   return (
-    <section className="py-24" ref={sectionRef}>
+    <section className="py-24">
       <div className="section-container">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ fontFamily: "var(--font-display)" }}>
@@ -134,7 +107,7 @@ export default function TestimonialsCarousel() {
           </p>
         </div>
 
-        <div className="testimonial-container max-w-2xl mx-auto" style={{ opacity: 0 }}>
+        <div className="testimonial-container max-w-2xl mx-auto">
           <div
             ref={cardRef}
             className="glass rounded-2xl p-8 md:p-10 text-center"
